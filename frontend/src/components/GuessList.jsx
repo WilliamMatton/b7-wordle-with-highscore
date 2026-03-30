@@ -5,7 +5,7 @@ export default function GuessList({ guesses }) {
     <ul className="guessList">
       {guesses.map((guess) => {
         return(
-          <WordGuess word={guess} />
+          <WordGuess guess={guess} key={guess.id} />
         );
       })}
     </ul>

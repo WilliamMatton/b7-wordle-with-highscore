@@ -12,8 +12,9 @@ function App() {
   return(
     <main className="app">
       <GuessList guesses={guesses} />
-      <WordForm onGuessWord={(text) => {
+      <WordForm onGuessWord={(text) => { // TODO: byt ut till API-call
         const newGuess = {
+          id: crypto.randomUUID(),
           word: text
         };
         setGuesses([...guesses, newGuess])
