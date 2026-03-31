@@ -5,10 +5,6 @@ import wordAPI from '../api/wordAPI.js';
 export default function initializeApp() {
   const app = express();
 
-  /*
-  API routes går via /api/resurs !
-  */
-
   app.get('/', async(req, res) => {
     const html = await fs.readFile('../frontend/dist/index.html');
     res.send(html.toString());
