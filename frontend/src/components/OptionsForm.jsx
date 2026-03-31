@@ -14,7 +14,7 @@ export default function OptionsForm({ onSubmitOptions }) {
         <input className="optionsFormTextField" name="lengthInput" type="number" min={0} value={length} onChange={(event) => setLength(event.target.value)} />
       </div>
       <div className="optionsFormSection2">
-        <input className="optionsFormCheckbox" name="repeatInput" type="checkbox" value={repeat} onChange={(event) => setRepeat(event.target.value)} checked />
+        <input className="optionsFormCheckbox" name="repeatInput" type="checkbox" value={repeat} onChange={(event) => setRepeat(event.target.value)} />
         <label htmlFor="repeatInput" className="optionsFormLabel">Word includes repeating letters</label>
       </div>
       <button className="optionsFormSubmitButton" type="submit">Start Game</button>

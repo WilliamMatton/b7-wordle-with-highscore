@@ -11,12 +11,16 @@ function App() {
 
   const [optionsSubmitted, setOptionsSubmitted] = useState(false);
 
+  const [gameWord, setGameWord] = useState('');
+
   return(
     <main className="app">
       <Activity mode={optionsSubmitted ? 'hidden' : 'visible'}>
-        <OptionsForm onSubmitOptions={(length, repeat) => {
-          console.log('You got the word!');
-          // API-call för att hämta ordet här!
+        <OptionsForm onSubmitOptions={async(length, repeat) => {
+          const response = await fetch(`http://localhost:5080/api/words?length=${length}&repeat=${repeat}`);
+          const word = await response.text();
+          console.log(`The word is: ${word}`);
+          setGameWord(word);
           setOptionsSubmitted(true);
         }} />
       </Activity>
