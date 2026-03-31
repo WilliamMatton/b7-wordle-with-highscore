@@ -1,22 +1,17 @@
 import fs from 'fs';
 
-async function getWord(length, repeat) {
-  let word = await fetchWord();
+async function getWord(length = 0, repeat = true) {
+  const lines = fs.readFileSync('./api/words.txt', 'utf-8')
+    .split('\n')
+    .map(word => word.trim());
 
-  if(length > 0) {
-    while (word.length != length) {
-      word = await fetchWord();
-    }
-  }
-  
-  return word;
-}
+  const matches = lines.filter(word =>
+    (length > 0 ? word.length == length : true) &&
+    (repeat === false || repeat === "false" ? new Set(word).size == word.length : true)
+  );
+  if(matches.length === 0) throw new Error(`No words found`);
 
-async function fetchWord() {
-  const lines = fs.readFileSync('./api/words.txt', 'utf-8').split('\n');
-  const lineIndex = Math.floor(Math.random() * 10000);
-  if(lineIndex >= lines.length) throw new Error(`Line ${lineIndex} not found`);
-  return lines[lineIndex].trim();
+  return matches[Math.floor(Math.random() * matches.length)];
 }
 
 const wordAPI = {

@@ -16,7 +16,7 @@ export default function initializeApp() {
 
   app.get('/api/words', async(req, res) => {
     const { length, repeat } = req.query;
-    const word = await wordAPI.getWord(!length ? 0 : length, !repeat ? true : false);
+    const word = await wordAPI.getWord(length, repeat);
     res.status(200).send(word);
   });
 
