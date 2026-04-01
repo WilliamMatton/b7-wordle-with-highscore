@@ -26,10 +26,13 @@ function App() {
       </Activity>
       <Activity mode={optionsSubmitted ? 'visible' : 'hidden'}>
         <GuessList guesses={guesses} />
-        <WordForm onGuessWord={(text) => { // TODO: byt ut till API-call
+        <WordForm onGuessWord={async(text) => {
+          const response = await fetch(`http://localhost:5080/api/evaluateGuess?guess=${text}&answer=${gameWord}`);
+          const evaluation = await response.json();
           const newGuess = {
             id: crypto.randomUUID(),
-            word: text
+            word: text,
+            evaluation: evaluation.evaluation
           };
           setGuesses([...guesses, newGuess])
         }} />
