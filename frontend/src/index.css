@@ -132,6 +132,13 @@ body {
   text-transform: capitalize;
 }
 
+.wordGuessCounter {
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
 .correct {
   background-color: #0c8d07;
 }
