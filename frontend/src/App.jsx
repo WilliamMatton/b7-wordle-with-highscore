@@ -6,12 +6,14 @@ import OptionsForm from "./components/OptionsForm.jsx";
 import WordForm from "./components/WordForm.jsx";
 import GuessList from "./components/GuessList.jsx";
 import GuessCounter from "./components/GuessCounter.jsx";
+import FinishScreen from "./components/FinishScreen.jsx";
 
 function App() {
   const [guesses, setGuesses] = useState([]);
 
   const [gameActive, setGameActive] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
+  const [gameWin, setGameWin] = useState(false);
 
   const [gameWord, setGameWord] = useState('');
 
@@ -43,13 +45,18 @@ function App() {
 
           if(correct) {
             setGameFinished(true);
+            setGameWin(true);
             setGameActive(false);
           }
         }} />
         <GuessCounter guesses={guesses} onLastGuess={() => {
           setGameFinished(true);
           setGameActive(false);
-          console.log('Game Finished!');
+        }} />
+      </Activity>
+      <Activity mode={gameFinished ? 'visible' : 'hidden'}>
+        <FinishScreen guesses={guesses} gameWord={gameWord} gameWin={gameWin} onRestart={() => {
+          // TODO: fixa så att det går att starta om!
         }} />
       </Activity>
     </main>

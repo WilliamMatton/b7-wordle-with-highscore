@@ -139,6 +139,37 @@ body {
   margin-top: 1rem;
 }
 
+.finishScreen {
+  background-color: white;
+  box-sizing: border-box;
+  border: 0.1rem solid #4d4d4d;
+  border-radius: 0.7rem;
+  height: 20rem;
+  padding: 1rem 1rem;
+  width: 25rem;
+}
+
+.finishScreenContent {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.finishScreenLine1, .finishScreenLine2 {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.finishScreenRestartButton {
+  background-color: black;
+  border: none;
+  border-radius: 0.4rem;
+  color: white;
+  font-size: 1.2rem;
+  height: 3rem;
+  width: 13rem;
+}
+
 .correct {
   background-color: #0c8d07;
 }
