@@ -15,18 +15,17 @@ function App() {
   const [gameWin, setGameWin] = useState(false);
 
   const [gameWord, setGameWord] = useState('');
-  const [repeatLetters, setRepeatLetters] = useState(false);
+  const [settings, setSettings] = useState({ length: 0, repeat: false });
   const [startTime, setStartTime] = useState(0);
   const [finishTime, setFinishTime] = useState(0);
 
   return(
     <main className="app">
       <Activity mode={gameActive || gameFinished ? 'hidden' : 'visible'}>
-        <OptionsForm onSubmitOptions={async(length, repeat) => {
-          const response = await fetch(`/api/words?length=${length}&repeat=${repeat}`);
+        <OptionsForm settings={settings} onSettingsChange={setSettings} onSubmitOptions={async() => {
+          const response = await fetch(`/api/words?length=${settings.length}&repeat=${settings.repeat}`);
           const word = await response.text();
           console.log(`The word is: ${word}`);
-          setRepeatLetters(repeat);
           setGameWord(word);
           setStartTime(Date.now());
           setGameActive(true);
@@ -75,7 +74,7 @@ function App() {
             guesses: guesses.map((guess) => guess.word),
             options: {
               wordLength: gameWord.length,
-              repeatLetters: repeatLetters
+              repeatLetters: settings.repeat
             }
           };
           console.log(`Score posted: ${JSON.stringify(score)}`);

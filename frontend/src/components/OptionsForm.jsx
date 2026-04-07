@@ -1,20 +1,15 @@
-import { useState } from "react";
-
-export default function OptionsForm({ onSubmitOptions }) {
-  const [length, setLength] = useState(0);
-  const [repeat, setRepeat] = useState('true');
-
+export default function OptionsForm({ settings, onSettingsChange, onSubmitOptions }) {
   return (
     <form className="optionsForm" onSubmit={(ev) => {
       ev.preventDefault();
-      onSubmitOptions(length, repeat);
+      onSubmitOptions();
     }}>
       <div className="optionsFormSection1">
-        <label htmlFor="lengthInput" className="optionsFormLabel">Word length</label>
-        <input className="optionsFormTextField" name="lengthInput" type="number" min={0} value={length} onChange={(event) => setLength(event.target.value)} />
+        <label htmlFor="lengthInput" className="optionsFormLabel">Word length (0 for random)</label>
+        <input className="optionsFormTextField" name="lengthInput" type="number" min={0} value={settings.length} onChange={(event) => onSettingsChange({ ...settings, length: event.target.value })} />
       </div>
       <div className="optionsFormSection2">
-        <input className="optionsFormCheckbox" name="repeatInput" type="checkbox" value={repeat} onChange={(event) => setRepeat(event.target.value)} />
+        <input className="optionsFormCheckbox" name="repeatInput" type="checkbox" checked={settings.repeat} onChange={(event) => onSettingsChange({ ...settings, repeat: event.target.checked })} />
         <label htmlFor="repeatInput" className="optionsFormLabel">Word includes repeating letters</label>
       </div>
       <button className="optionsFormSubmitButton" type="submit">Start Game</button>
