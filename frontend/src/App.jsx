@@ -1,7 +1,6 @@
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
-import { useState } from "react";
-import { Activity } from "react";
+import { useState, Activity } from "react";
 import OptionsForm from "./components/OptionsForm.jsx";
 import WordForm from "./components/WordForm.jsx";
 import GuessList from "./components/GuessList.jsx";
@@ -16,6 +15,9 @@ function App() {
   const [gameWin, setGameWin] = useState(false);
 
   const [gameWord, setGameWord] = useState('');
+  const [repeatLetters, setRepeatLetters] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [finishTime, setFinishTime] = useState(0);
 
   return(
     <main className="app">
@@ -24,7 +26,9 @@ function App() {
           const response = await fetch(`/api/words?length=${length}&repeat=${repeat}`);
           const word = await response.text();
           console.log(`The word is: ${word}`);
+          setRepeatLetters(repeat);
           setGameWord(word);
+          setStartTime(Date.now());
           setGameActive(true);
         }} />
       </Activity>
@@ -43,19 +47,40 @@ function App() {
 
           setGuesses([...guesses, newGuess]);
 
+          const elapsedSeconds = parseFloat(((Date.now() - startTime) / 1000).toFixed(1));
+
           if(correct) {
             setGameFinished(true);
             setGameWin(true);
+            setFinishTime(elapsedSeconds);
             setGameActive(false);
+            console.log(`Word found in ${elapsedSeconds} seconds.`);
+          }
+
+          if(guesses.length >= 5 && !correct) {
+            setGameFinished(true);
+            setGameWin(false);
+            setFinishTime(elapsedSeconds);
+            setGameActive(false);
+            console.log(`Game ended in ${elapsedSeconds} seconds.`);
           }
         }} />
-        <GuessCounter guesses={guesses} onLastGuess={() => {
-          setGameFinished(true);
-          setGameActive(false);
-        }} />
+        <GuessCounter guesses={guesses} />
       </Activity>
       <Activity mode={gameFinished ? 'visible' : 'hidden'}>
-        <FinishScreen guesses={guesses} gameWord={gameWord} gameWin={gameWin} onRestart={() => {
+        <FinishScreen guesses={guesses} gameWord={gameWord} gameWin={gameWin} finishTime={finishTime} onSubmitScore={async(username) => {
+          const score = {
+            username: username,
+            time: finishTime,
+            guesses: guesses.map((guess) => guess.word),
+            options: {
+              wordLength: gameWord.length,
+              repeatLetters: repeatLetters
+            }
+          };
+          console.log(`Score posted: ${JSON.stringify(score)}`);
+        }}
+        onRestart={() => {
           // TODO: fixa så att det går att starta om!
         }} />
       </Activity>

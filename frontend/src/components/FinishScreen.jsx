@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, Activity } from "react";
 
-export default function FinishScreen({ guesses, gameWord, gameWin, onRestart }) {
+export default function FinishScreen({ guesses, gameWord, gameWin, finishTime, onSubmitScore, onRestart }) {
   const [winText, setWinText] = useState('');
+  const [username, setUsername] = useState('');
+
+  const [scorePosted, setScorePosted] = useState(false);
 
   useEffect(() => {
     if(gameWin)
@@ -12,10 +14,25 @@ export default function FinishScreen({ guesses, gameWord, gameWin, onRestart }) 
   }, [gameWin]);
   
   return(
-    <div className="finishScreen">
+    <div className={gameWin ? "finishScreenLong" : "finishScreenShort"}>
       <div className="finishScreenContent">
         <p className="finishScreenLine1">{winText}</p>
-        <p className="finishScreenLine2">Do you want to play again?</p>
+        <Activity mode={gameWin && !scorePosted ? 'visible' : 'hidden'}>
+          <p className="finishScreenLine2">Your time was {finishTime} seconds. Do you want to post your score on the global leaderboard?</p>
+          <form className="finishScreenScoreForm" onSubmit={(ev) => {
+            ev.preventDefault();
+            onSubmitScore(username);
+            setUsername('');
+            setScorePosted(true);
+          }}>
+            <input className="finishScreenScoreInput" name="scoreInput" type="text" placeholder="John Doe" value={username} onChange={(event) => setUsername(event.target.value)} required />
+            <button className="finishScreenScoreButton" type="submit">Post Score</button>
+          </form>
+        </Activity>
+        <Activity mode={scorePosted ? 'visible' : 'hidden'}>
+          <p className="finishScreenPostedText">Score Posted! Be sure to check it out on the leaderboard.</p>
+        </Activity>
+        <p className="finishScreenLine3">Do you want to play again?</p>
         <button className="finishScreenRestartButton" onClick={onRestart}>Restart</button>
       </div>
     </div>
