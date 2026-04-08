@@ -77,7 +77,12 @@ function App() {
               repeatLetters: settings.repeat
             }
           };
-          console.log(`Score posted: ${JSON.stringify(score)}`);
+          
+          await fetch('/api/scores', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(score),
+          });
         }}
         onRestart={() => {
           // TODO: fixa så att det går att starta om!

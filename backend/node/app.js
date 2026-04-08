@@ -1,9 +1,14 @@
 import express from 'express';
 import fs from 'fs/promises'
+import mongoose from 'mongoose';
+
 import wordAPI from '../api/wordAPI.js';
+import Score from '../src/models/Score.js';
 
 export default function initializeApp() {
   const app = express();
+
+  app.use(express.json());
 
   app.get('/', async(req, res) => {
     const html = await fs.readFile('../frontend/dist/index.html');
@@ -27,6 +32,25 @@ export default function initializeApp() {
       else
         res.status(200).json({ evaluation: evaluation });
     }
+  });
+
+  app.get('/api/scores', async(req, res) => {
+    await mongoose.connect('mongodb://localhost:27017/wordle');
+    const scores = await Score.find();
+    res.json(scores);
+  });
+
+  app.post('/api/scores', async(req, res) => {
+    await mongoose.connect('mongodb://localhost:27017/wordle');
+    const score = new Score({
+      username: req.body.username,
+      time: req.body.time,
+      guesses: req.body.guesses,
+      options: req.body.options
+    });
+    await score.save();
+
+    res.status(201).json(score);
   });
 
   app.use('/assets', express.static('../frontend/dist/assets'));
