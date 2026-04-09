@@ -7,12 +7,27 @@ import Score from '../src/models/Score.js';
 
 export default function initializeApp() {
   const app = express();
+  app.set('view engine', 'pug');
+  app.set('views', 'views');
 
   app.use(express.json());
 
   app.get('/', async(req, res) => {
     const html = await fs.readFile('../frontend/dist/index.html');
     res.send(html.toString());
+  });
+
+  app.get('/leaderboard', async(req, res) => {
+    await mongoose.connect('mongodb://localhost:27017/wordle');
+    const scores = await Score.find();
+
+    res.render(
+      'leaderboard',
+      { 
+        title: 'Leaderboard',
+        scoreData: scores
+      }
+    );
   });
 
   app.get('/api/words', async(req, res) => {
@@ -52,6 +67,8 @@ export default function initializeApp() {
 
     res.status(201).json(score);
   });
+
+  app.use('/static', express.static('./static'));
 
   app.use('/assets', express.static('../frontend/dist/assets'));
 

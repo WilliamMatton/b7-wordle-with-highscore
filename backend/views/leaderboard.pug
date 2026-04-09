@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= title
+    link(rel="stylesheet", type="text/css" href="static/leaderboard.css")
+  body
+    main
+      div(class="leaderboard")
+        h1(class="lbHeading") Leaderboard
+        ul(class="scoreList")
+          each data in scoreData
+            li(class="scoreListItem")
+              p(class="scoreUsername")= data.username
+              small(class="scoreTime")= 'Time: ' + data.time + ' seconds'
