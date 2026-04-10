@@ -12,5 +12,15 @@ html(lang="en")
         ul(class="scoreList")
           each data in scoreData
             li(class="scoreListItem")
-              p(class="scoreUsername")= data.username
-              small(class="scoreTime")= 'Time: ' + data.time + ' seconds'
+              div(class="scoreLHS")
+                p(class="scoreUsername")= data.username
+                div(class="scoreInfo")
+                  small(class="scoreInfoTime")= 'Time: ' + data.time + ' seconds'
+                  small(class="scoreInfoLength")= 'Word length: ' + data.options.wordLength
+                  small(class="scoreInfoRepeat")= 'Repeat letters allowed: ' + data.options.repeatLetters
+              div(class="scoreRHS")
+                h1(class="guessesHeading") Guessed words
+                ul(class="guessList")
+                  each guess in data.guesses
+                    li(class="guessListItem")
+                      small(class="scoreInfoGuess")= guess

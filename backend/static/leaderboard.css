@@ -37,14 +37,50 @@ main {
   border-radius: 1rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   padding: 0 1rem;
+}
+
+.scoreLHS {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .scoreUsername {
   font-weight: bold;
+  margin-top: auto;
 }
 
-.scoreTime {
+.scoreInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin: 1rem 0 0;
+}
+
+.scoreInfoTime, .scoreInfoLength, .scoreInfoRepeat {
   font-style: italic;
+}
+
+.scoreRHS {
+  background-color: #78b878;
+  border: 0.1rem solid black;
+  border-radius: 0.5rem;
+  margin: 1rem 0 1rem auto;
+  padding: 0.5rem;
+}
+
+.guessesHeading {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.guessList {
+  list-style: decimal;
+  list-style-position: inside;
+  padding: 0;
+}
+
+.scoreInfoGuess {
+  font-size: 1rem;
 }
