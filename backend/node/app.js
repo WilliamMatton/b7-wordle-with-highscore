@@ -31,9 +31,14 @@ export default function initializeApp() {
   });
 
   app.get('/api/words', async(req, res) => {
-    const { length, repeat } = req.query;
-    const word = await wordAPI.getWord(length, repeat);
-    res.status(200).send(word);
+    try {
+      const { length, repeat } = req.query;
+      const word = await wordAPI.getWord(length, repeat);
+      res.status(200).send(word);
+    }
+    catch(error) {
+      res.status(400).json({ error: error.message });
+    }
   });
 
   app.get('/api/evaluateGuess', async(req, res) => {
@@ -56,16 +61,21 @@ export default function initializeApp() {
   });
 
   app.post('/api/scores', async(req, res) => {
-    await mongoose.connect('mongodb://localhost:27017/wordle');
-    const score = new Score({
-      username: req.body.username,
-      time: req.body.time,
-      guesses: req.body.guesses,
-      options: req.body.options
-    });
-    await score.save();
+    try {
+      await mongoose.connect('mongodb://localhost:27017/wordle');
+      const score = new Score({
+        username: req.body.username,
+        time: req.body.time,
+        guesses: req.body.guesses,
+        options: req.body.options
+      });
+      await score.save();
 
-    res.status(201).json(score);
+      res.status(201).json(score);
+    }
+    catch(error) {
+      res.status(500).json({ error: error.message });
+    }
   });
 
   app.use('/static', express.static('../frontend/static'));

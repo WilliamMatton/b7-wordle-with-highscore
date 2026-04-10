@@ -90,6 +90,11 @@ body {
   width: 100%;
 }
 
+.optionsError {
+  color: red;
+  margin-top: 1rem;
+}
+
 .wordForm {
   margin-top: 2rem;
 }

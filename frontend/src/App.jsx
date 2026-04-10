@@ -1,6 +1,6 @@
-import Header from "./components/Header.jsx";
-import Footer from "./components/Footer.jsx";
 import { useState, Activity } from "react";
+
+import Header from "./components/Header.jsx";
 import OptionsForm from "./components/OptionsForm.jsx";
 import WordForm from "./components/WordForm.jsx";
 import GuessList from "./components/GuessList.jsx";
@@ -8,16 +8,20 @@ import GuessCounter from "./components/GuessCounter.jsx";
 import FinishScreen from "./components/FinishScreen.jsx";
 
 function App() {
-  const [guesses, setGuesses] = useState([]);
-
   const [gameActive, setGameActive] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
   const [gameWin, setGameWin] = useState(false);
 
   const [gameWord, setGameWord] = useState('');
+  const [guesses, setGuesses] = useState([]);
   const [settings, setSettings] = useState({ length: 0, repeat: false });
   const [startTime, setStartTime] = useState(0);
   const [finishTime, setFinishTime] = useState(0);
+
+  const [scorePosting, setScorePosting] = useState(false);
+  const [scorePosted, setScorePosted] = useState(false);
+
+  const [errorMsg, setErrorMsg] = useState('');
 
   return(
     <>
@@ -26,8 +30,18 @@ function App() {
         <Activity mode={gameActive || gameFinished ? 'hidden' : 'visible'}>
           <OptionsForm settings={settings} onSettingsChange={setSettings} onSubmitOptions={async() => {
             const response = await fetch(`/api/words?length=${settings.length}&repeat=${settings.repeat}`);
+            if(response.status === 400) {
+              setErrorMsg('No words found with given settings!');
+              return;
+            }
+            else if(!response.ok) {
+              setErrorMsg('Server error! try again later');
+              return;
+            }
+
             const word = await response.text();
             console.log(`The word is: ${word}`);
+            setErrorMsg('');
             setGameWord(word);
             setStartTime(Date.now());
             setGameActive(true);
@@ -35,7 +49,7 @@ function App() {
         </Activity>
         <Activity mode={gameActive ? 'visible' : 'hidden'}>
           <GuessList guesses={guesses} />
-          <WordForm onGuessWord={async(text) => {
+          <WordForm wordLength={settings.length} onGuessWord={async(text) => {
             const response = await fetch(`/api/evaluateGuess?guess=${text}&answer=${gameWord}`);
             const evaluation = await response.json();
             const newGuess = {
@@ -69,7 +83,9 @@ function App() {
           <GuessCounter guesses={guesses} />
         </Activity>
         <Activity mode={gameFinished ? 'visible' : 'hidden'}>
-          <FinishScreen guesses={guesses} gameWord={gameWord} gameWin={gameWin} finishTime={finishTime} onSubmitScore={async(username) => {
+          <FinishScreen guesses={guesses} gameWord={gameWord} gameWin={gameWin} finishTime={finishTime} scorePosted={scorePosted} scorePosting={scorePosting} onSubmitScore={async(username) => {
+            setScorePosting(true);
+            setErrorMsg('');
             const score = {
               username: username,
               time: finishTime,
@@ -80,15 +96,26 @@ function App() {
               }
             };
             
-            await fetch('/api/scores', {
+            const response = await fetch('/api/scores', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(score),
             });
+
+            setScorePosting(false);
+            if(!response.ok) {
+              setErrorMsg('Could not connect to database! Try again later');
+              return;
+            }
+
+            setScorePosted(true);
           }}
           onRestart={() => {
             // TODO: fixa så att det går att starta om!
           }} />
+        </Activity>
+        <Activity mode={errorMsg.length === 0 ? 'hidden' : 'visible'}>
+          <small className="optionsError">{errorMsg}</small>
         </Activity>
       </main>
     </>
