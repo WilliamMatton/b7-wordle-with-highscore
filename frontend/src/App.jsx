@@ -20,75 +20,78 @@ function App() {
   const [finishTime, setFinishTime] = useState(0);
 
   return(
-    <main className="app">
-      <Activity mode={gameActive || gameFinished ? 'hidden' : 'visible'}>
-        <OptionsForm settings={settings} onSettingsChange={setSettings} onSubmitOptions={async() => {
-          const response = await fetch(`/api/words?length=${settings.length}&repeat=${settings.repeat}`);
-          const word = await response.text();
-          console.log(`The word is: ${word}`);
-          setGameWord(word);
-          setStartTime(Date.now());
-          setGameActive(true);
-        }} />
-      </Activity>
-      <Activity mode={gameActive ? 'visible' : 'hidden'}>
-        <GuessList guesses={guesses} />
-        <WordForm onGuessWord={async(text) => {
-          const response = await fetch(`/api/evaluateGuess?guess=${text}&answer=${gameWord}`);
-          const evaluation = await response.json();
-          const newGuess = {
-            id: crypto.randomUUID(),
-            word: text,
-            evaluation: evaluation.evaluation
-          };
-          const correct = newGuess.evaluation.filter((letter) =>
-            letter.result === 'correct').length === newGuess.evaluation.length;
+    <>
+      <Header />
+      <main className="app">
+        <Activity mode={gameActive || gameFinished ? 'hidden' : 'visible'}>
+          <OptionsForm settings={settings} onSettingsChange={setSettings} onSubmitOptions={async() => {
+            const response = await fetch(`/api/words?length=${settings.length}&repeat=${settings.repeat}`);
+            const word = await response.text();
+            console.log(`The word is: ${word}`);
+            setGameWord(word);
+            setStartTime(Date.now());
+            setGameActive(true);
+          }} />
+        </Activity>
+        <Activity mode={gameActive ? 'visible' : 'hidden'}>
+          <GuessList guesses={guesses} />
+          <WordForm onGuessWord={async(text) => {
+            const response = await fetch(`/api/evaluateGuess?guess=${text}&answer=${gameWord}`);
+            const evaluation = await response.json();
+            const newGuess = {
+              id: crypto.randomUUID(),
+              word: text,
+              evaluation: evaluation.evaluation
+            };
+            const correct = newGuess.evaluation.filter((letter) =>
+              letter.result === 'correct').length === newGuess.evaluation.length;
 
-          setGuesses([...guesses, newGuess]);
+            setGuesses([...guesses, newGuess]);
 
-          const elapsedSeconds = parseFloat(((Date.now() - startTime) / 1000).toFixed(1));
+            const elapsedSeconds = parseFloat(((Date.now() - startTime) / 1000).toFixed(1));
 
-          if(correct) {
-            setGameFinished(true);
-            setGameWin(true);
-            setFinishTime(elapsedSeconds);
-            setGameActive(false);
-            console.log(`Word found in ${elapsedSeconds} seconds.`);
-          }
-
-          if(guesses.length >= 5 && !correct) {
-            setGameFinished(true);
-            setGameWin(false);
-            setFinishTime(elapsedSeconds);
-            setGameActive(false);
-            console.log(`Game ended in ${elapsedSeconds} seconds.`);
-          }
-        }} />
-        <GuessCounter guesses={guesses} />
-      </Activity>
-      <Activity mode={gameFinished ? 'visible' : 'hidden'}>
-        <FinishScreen guesses={guesses} gameWord={gameWord} gameWin={gameWin} finishTime={finishTime} onSubmitScore={async(username) => {
-          const score = {
-            username: username,
-            time: finishTime,
-            guesses: guesses.map((guess) => guess.word),
-            options: {
-              wordLength: gameWord.length,
-              repeatLetters: settings.repeat
+            if(correct) {
+              setGameFinished(true);
+              setGameWin(true);
+              setFinishTime(elapsedSeconds);
+              setGameActive(false);
+              console.log(`Word found in ${elapsedSeconds} seconds.`);
             }
-          };
-          
-          await fetch('/api/scores', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(score),
-          });
-        }}
-        onRestart={() => {
-          // TODO: fixa så att det går att starta om!
-        }} />
-      </Activity>
-    </main>
+
+            if(guesses.length >= 5 && !correct) {
+              setGameFinished(true);
+              setGameWin(false);
+              setFinishTime(elapsedSeconds);
+              setGameActive(false);
+              console.log(`Game ended in ${elapsedSeconds} seconds.`);
+            }
+          }} />
+          <GuessCounter guesses={guesses} />
+        </Activity>
+        <Activity mode={gameFinished ? 'visible' : 'hidden'}>
+          <FinishScreen guesses={guesses} gameWord={gameWord} gameWin={gameWin} finishTime={finishTime} onSubmitScore={async(username) => {
+            const score = {
+              username: username,
+              time: finishTime,
+              guesses: guesses.map((guess) => guess.word),
+              options: {
+                wordLength: gameWord.length,
+                repeatLetters: settings.repeat
+              }
+            };
+            
+            await fetch('/api/scores', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(score),
+            });
+          }}
+          onRestart={() => {
+            // TODO: fixa så att det går att starta om!
+          }} />
+        </Activity>
+      </main>
+    </>
   );
 }
 
