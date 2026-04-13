@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>About</title>
+  <link rel='stylesheet' href='./static.css'>
+</head>
+<body>
+  <header class="pageHeader">
+      <ul class="headerPageList">
+        <li class="pageListItem">
+         <a class="headerLink" href="http://localhost:5080/">Play</a>
+        </li>
+        <li class="pageListItem">
+         <a class="headerLink" href="http://localhost:5080/leaderboard">Leaderboard</a>
+        </li>
+        <li class="pageListItem">
+         <a class="headerLink" href="http://localhost:5080/static/about.html">About</a>
+        </li>
+      </ul>
+    </header>
+    <main class="aboutMain">
+      <h1 class="aboutHeading">About the project</h1>
+      <article class="aboutGeneral">
+        <h2 class="aboutGeneralHeading">General</h2>
+        <p class="aboutGeneralParagraph">
+          This app represents a wordle-clone and has been built fullstack using React 
+          for the GUI. The app comprises two major parts, the game and the global 
+          leaderboard showing submitted player scores. You can find information about 
+          both respective parts below.
+        </p>
+      </article>
+      <article class="aboutGame">
+        <h2 class="aboutGameHeading">The game</h2>
+        <p class="aboutGameParagraph">
+          The main feature of the app is the wordle-clone. It is based on a simple REST 
+          API for fetching a random english word among a collection of 10000. The player 
+          may choose both how long the word should be, and if it is allowed to include 
+          repeating letters. As the player starts the game, a timer will keep track of  
+          how long it takes them to correctly guess the word. The player has a total of 
+          6 attempts to guess the word. Each guess the player makes will be sent to the 
+          API for correction. The API will compare the guess to the session word and
+          provide the player with feedback.
+        </p>
+      </article>
+      <article class="aboutLeaderboard">
+        <h2 class="aboutLeaderboardHeading">Leaderboard</h2>
+        <p class="aboutLeaderboardParagraph">
+          The app also features a global leaderboard displaying previous game completion 
+          statistics. When the player has correctly guessed the word, they are presented 
+          with their stats and may choose to post them to the leaderboard. Each score 
+          displayed shows the players desired username, the time it took the player to 
+          guess the word, the settings the player used, and a list of all the guesses the 
+          player made. The leaderboard scores are stored persistently in a MongoDB database. 
+          The leaderboard page is server-side rendered via the Pug template engine. 
+        </p>
+      </article>
+    </main>
+</body>
+</html>

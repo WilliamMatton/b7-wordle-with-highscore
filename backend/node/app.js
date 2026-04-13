@@ -78,7 +78,7 @@ export default function initializeApp() {
     }
   });
 
-  app.use('/static', express.static('static'));
+  app.use('/static', express.static('./static'));
 
   app.use('/assets', express.static('../frontend/dist/assets'));
 
