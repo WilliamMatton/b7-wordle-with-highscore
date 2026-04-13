@@ -111,7 +111,20 @@ function App() {
             setScorePosted(true);
           }}
           onRestart={() => {
-            // TODO: fixa så att det går att starta om!
+            setGameActive(false);
+            setGameFinished(false);
+            setGameWin(false);
+
+            setGameWord('');
+            setGuesses([]);
+            setSettings({ length: 0, repeat: false });
+            setStartTime(0);
+            setFinishTime(0);
+
+            setScorePosting(false);
+            setScorePosted(false);
+
+            setErrorMsg('');
           }} />
         </Activity>
         <Activity mode={errorMsg.length === 0 ? 'hidden' : 'visible'}>

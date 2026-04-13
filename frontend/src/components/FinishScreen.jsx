@@ -4,8 +4,6 @@ export default function FinishScreen({ guesses, gameWord, gameWin, finishTime, s
   const [winText, setWinText] = useState('');
   const [username, setUsername] = useState('');
 
-  
-
   useEffect(() => {
     if(gameWin)
       setWinText(`Congratulations! The word was \'${gameWord}\', and you guessed it in ${guesses.length} ${guesses.length > 1 ? 'guesses!' : 'guess!'}`);
