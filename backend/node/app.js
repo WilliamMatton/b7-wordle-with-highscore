@@ -8,7 +8,7 @@ import Score from '../src/models/Score.js';
 export default function initializeApp() {
   const app = express();
   app.set('view engine', 'pug');
-  app.set('views', '../frontend/views');
+  app.set('views', 'views');
 
   app.use(express.json());
 
@@ -78,7 +78,7 @@ export default function initializeApp() {
     }
   });
 
-  app.use('/static', express.static('../frontend/static'));
+  app.use('/static', express.static('static'));
 
   app.use('/assets', express.static('../frontend/dist/assets'));
 
