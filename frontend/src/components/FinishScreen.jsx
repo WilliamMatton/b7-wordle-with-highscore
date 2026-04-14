@@ -1,6 +1,8 @@
-import { useState, useEffect, Activity } from "react";
+import ErrorMsg from "./ErrorMsg.jsx";
 
-export default function FinishScreen({ guesses, gameWord, gameWin, finishTime, scorePosted, scorePosting, onSubmitScore, onRestart }) {
+import { useState, useEffect } from "react";
+
+export default function FinishScreen({ guesses, gameWord, gameWin, finishTime, scorePosted, scorePosting, errorMsg, onSubmitScore, onRestart }) {
   const [winText, setWinText] = useState('');
   const [username, setUsername] = useState('');
 
@@ -15,12 +17,20 @@ export default function FinishScreen({ guesses, gameWord, gameWin, finishTime, s
     <div className={gameWin ? "finishScreenLong" : "finishScreenShort"}>
       <div className="finishScreenContent">
         <p className="finishScreenLine1">{winText}</p>
-        <Activity mode={gameWin && !scorePosted ? 'visible' : 'hidden'}>
+        
+        {(gameWin && !scorePosted) && (
+          <>
           <p className="finishScreenLine2">Your time was {finishTime} seconds. Do you want to post your score on the global leaderboard?</p>
-          <Activity mode={scorePosting ? 'visible' : 'hidden'}>
+          
+          {scorePosting && (
             <p className="finishScreenLine2">Posting score...</p>
-          </Activity>
-          <Activity mode={!scorePosting ? 'visible' : 'hidden'}>
+          )}
+          
+          {errorMsg.length > 0 && (
+            <ErrorMsg msg={errorMsg} />
+          )}
+          
+          {!scorePosting && (
             <form className="finishScreenScoreForm" onSubmit={(ev) => {
               ev.preventDefault();
               onSubmitScore(username);
@@ -29,11 +39,14 @@ export default function FinishScreen({ guesses, gameWord, gameWin, finishTime, s
               <input className="finishScreenScoreInput" name="scoreInput" type="text" placeholder="John Doe" value={username} onChange={(event) => setUsername(event.target.value)} required />
               <button className="finishScreenScoreButton" type="submit">Post Score</button>
             </form>
-          </Activity>
-        </Activity>
-        <Activity mode={scorePosted ? 'visible' : 'hidden'}>
+          )}
+          </>
+        )}
+
+        {scorePosted && (
           <p className="finishScreenPostedText">Score Posted! Be sure to check it out on the leaderboard.</p>
-        </Activity>
+        )}
+
         <p className="finishScreenLine3">Do you want to play again?</p>
         <button className="finishScreenRestartButton" onClick={onRestart}>Restart</button>
       </div>

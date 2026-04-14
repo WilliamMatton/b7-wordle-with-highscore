@@ -1,4 +1,4 @@
-import { useState, Activity } from "react";
+import { useState } from "react";
 
 import Header from "./components/Header.jsx";
 import OptionsForm from "./components/OptionsForm.jsx";
@@ -124,7 +124,7 @@ function App() {
       <Header />
       <main className="app">
         {!(gameActive || gameFinished) && (
-          <OptionsForm settings={settings} onSettingsChange={setSettings} onSubmitOptions={onSubmitOptions} />
+          <OptionsForm settings={settings} onSettingsChange={setSettings} onSubmitOptions={onSubmitOptions} errorMsg={errorMsg} />
         )}
 
         {gameActive &&
@@ -143,13 +143,10 @@ function App() {
             finishTime={finishTime}
             scorePosted={scorePosted}
             scorePosting={scorePosting}
+            errorMsg={errorMsg}
             onSubmitScore={onSubmitScore}
             onRestart={onRestart}
           />
-        }
-
-        {errorMsg.length > 0 &&
-          <small className="optionsError">{errorMsg}</small>
         }
       </main>
     </>

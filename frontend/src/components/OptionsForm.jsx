@@ -1,4 +1,6 @@
-export default function OptionsForm({ settings, onSettingsChange, onSubmitOptions }) {
+import ErrorMsg from "./ErrorMsg.jsx";
+
+export default function OptionsForm({ settings, onSettingsChange, onSubmitOptions, errorMsg }) {
   return (
     <form className="optionsForm" onSubmit={(ev) => {
       ev.preventDefault();
@@ -12,6 +14,11 @@ export default function OptionsForm({ settings, onSettingsChange, onSubmitOption
         <input className="optionsFormCheckbox" name="repeatInput" type="checkbox" checked={settings.repeat} onChange={(event) => onSettingsChange({ ...settings, repeat: event.target.checked })} />
         <label htmlFor="repeatInput" className="optionsFormLabel">Word includes repeating letters</label>
       </div>
+
+      {errorMsg.length > 0 &&
+        <ErrorMsg msg={errorMsg} />    
+      }
+
       <button className="optionsFormSubmitButton" type="submit">Start Game</button>
     </form>
   );
