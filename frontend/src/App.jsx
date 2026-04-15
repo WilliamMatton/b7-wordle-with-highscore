@@ -11,12 +11,11 @@ function App() {
   const [gameActive, setGameActive] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
   const [gameWin, setGameWin] = useState(false);
+  const [finishTime, setFinishTime] = useState(0);
 
-  const [gameWord, setGameWord] = useState('');
+  const [gameID, setGameID] = useState(null);
   const [guesses, setGuesses] = useState([]);
   const [settings, setSettings] = useState({ length: 0, repeat: false });
-  const [startTime, setStartTime] = useState(0);
-  const [finishTime, setFinishTime] = useState(0);
 
   const [scorePosting, setScorePosting] = useState(false);
   const [scorePosted, setScorePosted] = useState(false);
@@ -24,7 +23,10 @@ function App() {
   const [errorMsg, setErrorMsg] = useState('');
 
   async function onSubmitOptions() {
-    const response = await fetch(`/api/words?length=${settings.length}&repeat=${settings.repeat}`);
+    const response = await fetch(`/api/games?length=${settings.length}&repeat=${settings.repeat}`, {
+      method: 'POST'
+    });
+  
     if(response.status === 400) {
       setErrorMsg('No words found with given settings!');
       return;
@@ -34,43 +36,40 @@ function App() {
       return;
     }
 
-    const word = await response.text();
-    console.log(`The word is: ${word}`);
+    const gameSession = await response.json();
     setErrorMsg('');
-    setGameWord(word);
-    setStartTime(Date.now());
+    setGameID(gameSession.sessionID);
     setGameActive(true);
   }
 
   async function onGuessWord(text) {
-    const response = await fetch(`/api/evaluateGuess?guess=${text}&answer=${gameWord}`);
-    const evaluation = await response.json();
+    const response = await fetch(`/api/games/${gameID}/guesses`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ guess: text })
+    });
+    const gameData = await response.json();
+
     const newGuess = {
       id: crypto.randomUUID(),
       word: text,
-      evaluation: evaluation.evaluation
+      evaluation: gameData.evaluation
     };
-    const correct = newGuess.evaluation.filter((letter) =>
-      letter.result === 'correct').length === newGuess.evaluation.length;
-
+    
     setGuesses([...guesses, newGuess]);
 
-    const elapsedSeconds = parseFloat(((Date.now() - startTime) / 1000).toFixed(1));
-
-    if(correct) {
+    if(gameData.gameWin) {
       setGameFinished(true);
       setGameWin(true);
-      setFinishTime(elapsedSeconds);
+      setFinishTime(gameData.finishTime);
       setGameActive(false);
-      console.log(`Word found in ${elapsedSeconds} seconds.`);
     }
 
-    if(guesses.length >= 5 && !correct) {
+    if(guesses.length >= 5 && !gameData.gameWin) {
       setGameFinished(true);
       setGameWin(false);
-      setFinishTime(elapsedSeconds);
+      setFinishTime(gameData.finishTime);
       setGameActive(false);
-      console.log(`Game ended in ${elapsedSeconds} seconds.`);
     }
   }
 
@@ -82,7 +81,7 @@ function App() {
       time: finishTime,
       guesses: guesses.map((guess) => guess.word),
       options: {
-        wordLength: gameWord.length,
+        wordLength: settings.length,
         repeatLetters: settings.repeat
       }
     };
@@ -107,10 +106,9 @@ function App() {
     setGameFinished(false);
     setGameWin(false);
 
-    setGameWord('');
+    setGameID(null);
     setGuesses([]);
     setSettings({ length: 0, repeat: false });
-    setStartTime(0);
     setFinishTime(0);
 
     setScorePosting(false);
@@ -138,7 +136,6 @@ function App() {
         {gameFinished &&
           <FinishScreen
             guesses={guesses}
-            gameWord={gameWord}
             gameWin={gameWin}
             finishTime={finishTime}
             scorePosted={scorePosted}
