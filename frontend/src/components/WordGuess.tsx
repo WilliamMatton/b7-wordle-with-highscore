@@ -1,6 +1,13 @@
-import Letter from "./Letter.jsx";
+import type { FC } from "react";
 
-export default function WordGuess({ guess }) {
+import type { guess } from "../types.js";
+import Letter from "./Letter.js";
+
+type Props = {
+  guess : guess;
+}
+
+const WordGuess : FC<Props> = ({ guess }) => {
   const word = guess.word;
   const evaluation = guess.evaluation;
 
@@ -9,8 +16,8 @@ export default function WordGuess({ guess }) {
   for(let i = 0; i < word.length; i++) {
     const letter = {
       id: crypto.randomUUID(),
-      letter: word[i],
-      grade: evaluation[i].result
+      letter: word[i]!,
+      grade: evaluation[i]!.result
     }
     letters[i] = letter;
   }
@@ -25,3 +32,5 @@ export default function WordGuess({ guess }) {
     </ul>
   );
 }
+
+export default WordGuess;

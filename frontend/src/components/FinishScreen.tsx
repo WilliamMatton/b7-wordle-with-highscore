@@ -1,8 +1,20 @@
-import ErrorMsg from "./ErrorMsg.jsx";
+import { useState, useEffect, type FC } from "react";
 
-import { useState, useEffect } from "react";
+import type { guess, onSubmitScore } from "../types.js";
+import ErrorMsg from "./ErrorMsg.js";
 
-export default function FinishScreen({ guesses, gameWin, finishTime, scorePosted, scorePosting, errorMsg, onSubmitScore, onRestart }) {
+type Props = {
+  guesses : guess[];
+  gameWin : boolean;
+  finishTime : number;
+  scorePosted : boolean;
+  scorePosting : boolean;
+  errorMsg : string;
+  onSubmitScore : onSubmitScore;
+  onRestart : () => void;
+}
+
+const FinishScreen : FC<Props> = ({ guesses, gameWin, finishTime, scorePosted, scorePosting, errorMsg, onSubmitScore, onRestart }) => {
   const [winText, setWinText] = useState('');
   const [username, setUsername] = useState('');
 
@@ -53,3 +65,5 @@ export default function FinishScreen({ guesses, gameWin, finishTime, scorePosted
     </div>
   );
 }
+
+export default FinishScreen;

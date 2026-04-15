@@ -1,20 +1,21 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 
-import Header from "./components/Header.jsx";
-import OptionsForm from "./components/OptionsForm.jsx";
-import WordForm from "./components/WordForm.jsx";
-import GuessList from "./components/GuessList.jsx";
-import GuessCounter from "./components/GuessCounter.jsx";
-import FinishScreen from "./components/FinishScreen.jsx";
+import type { guess } from "./types.js";
+import Header from "./components/Header.js";
+import OptionsForm from "./components/OptionsForm.js";
+import WordForm from "./components/WordForm.js";
+import GuessList from "./components/GuessList.js";
+import GuessCounter from "./components/GuessCounter.js";
+import FinishScreen from "./components/FinishScreen.js";
 
-function App() {
+const App : FC = () => {
   const [gameActive, setGameActive] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
   const [gameWin, setGameWin] = useState(false);
   const [finishTime, setFinishTime] = useState(0);
 
   const [gameID, setGameID] = useState(null);
-  const [guesses, setGuesses] = useState([]);
+  const [guesses, setGuesses] = useState<guess[]>([]);
   const [settings, setSettings] = useState({ length: 0, repeat: false });
 
   const [scorePosting, setScorePosting] = useState(false);
@@ -42,7 +43,7 @@ function App() {
     setGameActive(true);
   }
 
-  async function onGuessWord(text) {
+  async function onGuessWord(text : string) {
     const response = await fetch(`/api/games/${gameID}/guesses`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -73,7 +74,7 @@ function App() {
     }
   }
 
-  async function onSubmitScore(username) {
+  async function onSubmitScore(username : string) {
     setScorePosting(true);
     setErrorMsg('');
     const score = {

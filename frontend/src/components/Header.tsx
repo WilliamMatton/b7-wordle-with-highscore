@@ -1,4 +1,6 @@
-export default function Header() {
+import type { FC } from "react";
+
+const Header : FC = () => {
   return(
     <header className="pageHeader">
       <ul className="headerPageList">
@@ -15,3 +17,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default Header;
