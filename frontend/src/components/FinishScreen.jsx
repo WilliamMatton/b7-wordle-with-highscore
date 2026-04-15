@@ -2,15 +2,15 @@ import ErrorMsg from "./ErrorMsg.jsx";
 
 import { useState, useEffect } from "react";
 
-export default function FinishScreen({ guesses, gameWord, gameWin, finishTime, scorePosted, scorePosting, errorMsg, onSubmitScore, onRestart }) {
+export default function FinishScreen({ guesses, gameWin, finishTime, scorePosted, scorePosting, errorMsg, onSubmitScore, onRestart }) {
   const [winText, setWinText] = useState('');
   const [username, setUsername] = useState('');
 
   useEffect(() => {
     if(gameWin)
-      setWinText(`Congratulations! The word was \'${gameWord}\', and you guessed it in ${guesses.length} ${guesses.length > 1 ? 'guesses!' : 'guess!'}`);
+      setWinText(`Congratulations! You guessed the word in ${guesses.length} ${guesses.length > 1 ? 'guesses!' : 'guess!'}`);
     else
-      setWinText(`Better luck next time! You ran out of guesses. The word was \'${gameWord}\'`);
+      setWinText('Better luck next time! You ran out of guesses.');
   }, [gameWin]);
   
   return(
