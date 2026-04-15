@@ -1,9 +1,10 @@
 import express from 'express';
 import fs from 'fs/promises'
-import mongoose from 'mongoose';
+import mongoose, { Error } from 'mongoose';
 
-import wordAPI from '../api/wordAPI.js';
-import Score from '../src/models/Score.js';
+import type { gameSession } from './types.js'
+import wordAPI from './api/wordAPI.js';
+import Score from './models/Score.js';
 
 export default function initializeApp() {
   const app = express();
@@ -12,7 +13,7 @@ export default function initializeApp() {
 
   app.use(express.json());
 
-  const GAME_SESSIONS = [];
+  const GAME_SESSIONS : gameSession[] = [];
 
   app.get('/', async(req, res) => {
     const html = await fs.readFile('../frontend/dist/index.html');
@@ -22,10 +23,13 @@ export default function initializeApp() {
   app.post('/api/games', async(req, res) => {
     try {
       const { length, repeat } = req.query;
-      const word = await wordAPI.getWord(length, repeat);
+      const word = await wordAPI.getWord(
+        length ? parseInt(length as string) : 0,
+        repeat === 'true'
+      );
       
       const gameSession = {
-        gameWord: word,
+        gameWord: word!,
         guesses: [],
         sessionID: crypto.randomUUID(),
         startTime: Date.now()
@@ -35,7 +39,8 @@ export default function initializeApp() {
       res.status(201).json({ sessionID: gameSession.sessionID });
     }
     catch(error) {
-      res.status(400).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      res.status(400).json({ error: message });
     }
   });
 
@@ -105,7 +110,8 @@ export default function initializeApp() {
       res.status(201).json(score);
     }
     catch(error) {
-      res.status(500).json({ error: error.message });
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      res.status(500).json({ error: message });
     }
   });
 

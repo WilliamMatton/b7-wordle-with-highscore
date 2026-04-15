@@ -1,4 +1,4 @@
-import initializeApp from './node/app.js'
+import initializeApp from './app.js';
 
 const app = initializeApp();
 

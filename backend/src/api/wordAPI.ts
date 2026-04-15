@@ -1,13 +1,13 @@
 import fs from 'fs';
 
 async function getWord(length = 0, repeat = true) {
-  const lines = fs.readFileSync('./api/words.txt', 'utf-8')
+  const lines = fs.readFileSync('./src/api/words.txt', 'utf-8')
     .split('\n')
-    .map(word => word.trim());
+    .map((word: string) => word.trim());
 
-  const matches = lines.filter(word =>
+  const matches = lines.filter((word : string) =>
     (length > 0 ? word.length == length : true) &&
-    (repeat === false || repeat === "false" ? new Set(word).size == word.length : true)
+    (repeat === false ? new Set(word).size == word.length : true)
   );
   if(matches.length === 0)
     throw new Error('No words found');
@@ -15,7 +15,7 @@ async function getWord(length = 0, repeat = true) {
   return matches[Math.floor(Math.random() * matches.length)];
 }
 
-async function evaluateGuess(guessedWord, correctWord) {
+async function evaluateGuess(guessedWord : string, correctWord : string) {
   const guess = guessedWord.trim().toLowerCase();
   const answer = correctWord.trim().toLowerCase();
 
@@ -52,7 +52,7 @@ async function evaluateGuess(guessedWord, correctWord) {
   for(let i = 0; i < wordLength; i++) {
     if(wordArray[i] !== undefined) continue;
     
-    if(answer.includes(guess[i]) && frequencyMap.get(guess[i]) > 0) {
+    if(answer.includes(guess[i]!) && frequencyMap.get(guess[i]) > 0) {
       wordArray[i] = {letter: guess[i], result: 'misplaced'};
       frequencyMap.set(guess[i], frequencyMap.get(guess[i]) - 1);
     }

@@ -5,14 +5,19 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "npx tsc --project ./tsconfig.json && node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "express": "^5.2.1",
     "mongoose": "^9.4.1",
-    "pug": "^3.0.4"
+    "pug": "^3.0.4",
+    "typescript": "^6.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0"
   }
 }
