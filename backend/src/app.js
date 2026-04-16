@@ -2,8 +2,8 @@ import express from 'express';
 import fs from 'fs/promises'
 import mongoose from 'mongoose';
 
-import wordAPI from '../api/wordAPI.js';
-import Score from '../src/models/Score.js';
+import wordAPI from './api/wordAPI.js';
+import Score from './models/Score.js';
 
 export default function initializeApp() {
   const app = express();
