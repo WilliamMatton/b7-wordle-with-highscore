@@ -46,6 +46,46 @@ main {
   text-align: center;
 }
 
+.lbFilterMenu {
+  background-color: rgb(71, 71, 71);
+  border: 0.1rem solid white;
+  margin: 0 2rem;
+  padding: 1rem;
+}
+
+.lbFilterForm {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.lbFilterHeading {
+  color: white;
+  font-weight: lighter;
+  margin: 0 0 1rem;
+}
+
+.lbFilterLHS, .lbFilterRHS {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 50%;
+}
+
+.lbSelectLabel {
+  color: white;
+  font-size: 1rem;
+}
+
+.lbLengthSelect, .lbRepeatSelect {
+  background-color: #e0e0e0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  height: 3rem;
+  padding: 0 0.3rem;
+}
+
 .scoreList {
   display: flex;
   flex-direction: column;

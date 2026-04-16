@@ -86,15 +86,13 @@ export default function initializeApp() {
     if(filterData.repeat !== null) query['options.repeatLetters'] = filterData.repeat;
 
     const scores = await Score.find(query);
-
-    const maxDoc = await Score.findOne().sort({ 'options.wordLength': -1 });
-    const maxFilterLength = maxDoc ? maxDoc.options.wordLength : 1;
+    const wordLengths = await Score.distinct('options.wordLength');
 
     res.render('leaderboard', { 
         title: 'Leaderboard',
         scoreData: scores,
         filterData: filterData,
-        maxLength: maxFilterLength
+        lengths: wordLengths
       }
     );
   });
