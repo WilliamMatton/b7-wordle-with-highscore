@@ -74,13 +74,27 @@ export default function initializeApp() {
 
   app.get('/leaderboard', async(req, res) => {
     await mongoose.connect('mongodb://localhost:27017/wordle');
-    const scores = await Score.find();
 
-    res.render(
-      'leaderboard',
-      { 
+    const { length, repeating } = req.query;
+    const filterData = {
+      length: length ? parseInt(length) : null,
+      repeat: repeating ? repeating === "true" : null
+    };
+
+    const query = {};
+    if(filterData.length !== null) query['options.wordLength'] = filterData.length;
+    if(filterData.repeat !== null) query['options.repeatLetters'] = filterData.repeat;
+
+    const scores = await Score.find(query);
+
+    const maxDoc = await Score.findOne().sort({ 'options.wordLength': -1 });
+    const maxFilterLength = maxDoc ? maxDoc.options.wordLength : 1;
+
+    res.render('leaderboard', { 
         title: 'Leaderboard',
-        scoreData: scores
+        scoreData: scores,
+        filterData: filterData,
+        maxLength: maxFilterLength
       }
     );
   });

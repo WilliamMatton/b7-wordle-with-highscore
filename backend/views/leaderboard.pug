@@ -7,21 +7,21 @@ block pageStyle
   link(rel="stylesheet", type="text/css" href="/static/static.css")
 
 block content
+  - const filterLength = filterData.length != null
+  - const filterRepeat = filterData.repeat != null
+  - let n = 1
   main
     div(class="leaderboard")
       h1(class="lbHeading") Leaderboard
+      form(class="lbFilterForm" method="GET")
+        select(class="lbLengthSelect" name="length" onchange="this.form.submit()")
+          option(value="" selected=!filterLength) All
+          while n <= maxLength
+            option(value=n selected=filterLength && filterData.length == n)= n++
+        select(class="lbRepeatSelect" name="repeating" onchange="this.form.submit()")
+          option(value="" selected=!filterRepeat) All
+          option(value="true" selected=filterRepeat && filterData.repeat) True
+          option(value="false" selected=filterRepeat && !filterData.repeat) False
       ul(class="scoreList")
         each data in scoreData
-          li(class="scoreListItem")
-            div(class="scoreLHS")
-              p(class="scoreUsername")= data.username
-              div(class="scoreInfo")
-                small(class="scoreInfoTime")= 'Time: ' + data.time + ' seconds'
-                small(class="scoreInfoLength")= 'Word length: ' + data.options.wordLength
-                small(class="scoreInfoRepeat")= 'Repeat letters allowed: ' + data.options.repeatLetters
-            div(class="scoreRHS")
-              h1(class="guessesHeading") Guessed words
-              ul(class="guessList")
-                each guess in data.guesses
-                  li(class="guessListItem")
-                    small(class="scoreInfoGuess")= guess
+          include ./includes/scoreItem.pug

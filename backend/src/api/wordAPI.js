@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 async function getWord(length = 0, repeat = true) {
-  const lines = fs.readFileSync('./api/words.txt', 'utf-8')
+  const lines = fs.readFileSync('./src/api/words.txt', 'utf-8')
     .split('\n')
     .map(word => word.trim());
 
