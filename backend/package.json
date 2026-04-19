@@ -9,8 +9,8 @@
   "scripts": {
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sass": "sass --no-source-map src/sass/main.scss static/output.css",
-    "watch-sass": "sass --watch --no-source-map src/sass/main.scss static/output.css"
+    "sass": "sass --no-source-map src/sass/main.scss static/static.css",
+    "watch-sass": "sass --watch --no-source-map src/sass/main.scss static/static.css"
   },
   "dependencies": {
     "express": "^5.2.1",
