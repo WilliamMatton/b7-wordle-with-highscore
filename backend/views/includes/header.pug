@@ -1,8 +1,19 @@
 header(class="pageHeader")
-  ul(class="headerPageList")
+  ul(class="headerPageList" id="headerPageList")
+    button(class="mobileHeaderCloseBtn" id="mobileHeaderCloseBtn")
     li(class="pageListItem")
       a(class="headerLink" href="http://localhost:5080/") Play
     li(class="pageListItem")
       a(class="headerLink" href="http://localhost:5080/leaderboard") Leaderboard
     li(class="pageListItem")
       a(class="headerLink" href="http://localhost:5080/static/about.html") About
+  button(class="headerMenuButton" type="button" id="headerMenuButton")
+
+script. 
+  const list = document.getElementById("headerPageList");
+  document.getElementById("headerMenuButton").addEventListener("click", () => {
+    list.classList.add("active");
+  });
+  document.getElementById("mobileHeaderCloseBtn").addEventListener("click", () => {
+    list.classList.remove("active");
+  });

@@ -1,0 +1,18 @@
+$screen_width_480: 480px;
+$screen_width_600: 600px;
+
+$color_correct: #0c8d07;
+$color_incorrect: #af0202;
+$color_misplaced: #aeb911;
+
+@mixin from-width($min-width) {
+  @media screen and (min-width: $min-width) {
+    @content;
+  }
+}
+
+@mixin until-height($max-height) {
+    @media screen and (max-height: $max-height) {
+        @content;
+    }
+}

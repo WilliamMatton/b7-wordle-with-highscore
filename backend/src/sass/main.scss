@@ -1,0 +1,22 @@
+@use '../../../frontend/src/sass/lib.scss' as *;
+@use '../../../frontend/src/sass/sections/header.scss';
+@use 'sections/leaderboard.scss';
+@use 'sections/lbFilters.scss';
+@use 'sections/about.scss';
+
+body {
+  background-color: #414141;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  margin: 0 5%;
+
+  @include from-width($screen_width_480) {
+    margin: 0 10%;
+  }
+}

@@ -1,0 +1,32 @@
+@use '../../../../frontend/src/sass/lib.scss' as *;
+
+.aboutMain {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.aboutHeading {
+  color: white;
+  font-weight: normal;
+}
+
+.aboutGeneral, .aboutGame, .aboutLeaderboard {
+  background-color: white;
+  border-radius: 1rem;
+  box-sizing: border-box;
+  max-width: 800px;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+.aboutGeneralHeading, .aboutGameHeading, .aboutLeaderboardHeading {
+  font-weight: lighter;
+}
+
+.aboutGeneralParagraph, .aboutGameParagraph, .aboutLeaderboardParagraph {
+  text-align: left;
+}

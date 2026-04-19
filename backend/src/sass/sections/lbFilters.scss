@@ -1,0 +1,53 @@
+@use '../../../../frontend/src/sass/lib.scss' as *;
+
+.lbFilterMenu {
+  background-color: rgb(71, 71, 71);
+  border: 0.1rem solid white;
+  margin: 0 1rem;
+  padding: 1rem;
+
+  @include from-width($screen_width_480) {
+    margin: 0 2rem;
+  }
+}
+
+.lbFilterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+
+  @include from-width($screen_width_600) {
+    flex-direction: row;
+  }
+}
+
+.lbFilterHeading {
+  color: white;
+  font-weight: lighter;
+  margin: 0 0 1rem;
+}
+
+.lbFilterLHS, .lbFilterRHS {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+
+  @include from-width($screen_width_600) {
+    width: 50%;
+  }
+}
+
+.lbSelectLabel {
+  color: white;
+  font-size: 1rem;
+}
+
+.lbLengthSelect, .lbRepeatSelect {
+  background-color: #e0e0e0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  height: 3rem;
+  padding: 0 0.3rem;
+}
