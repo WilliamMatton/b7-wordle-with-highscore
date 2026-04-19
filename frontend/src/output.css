@@ -11,9 +11,9 @@
   border: none;
   cursor: pointer;
   height: 2rem;
-  left: 42%;
-  position: relative;
-  top: -25%;
+  right: 2rem;
+  position: fixed;
+  top: 4rem;
   width: 2rem;
 }
 .mobileHeaderCloseBtn::before, .mobileHeaderCloseBtn::after {
@@ -116,6 +116,71 @@
   .headerMenuButton {
     display: none;
   }
+}
+
+.optionsForm {
+  background-color: white;
+  border: 0.1rem solid #4d4d4d;
+  border-radius: 0.7rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 23rem;
+  margin: 2rem 0;
+  max-width: 100%;
+  padding: 1rem;
+  width: 23rem;
+}
+@media screen and (min-width: 480px) {
+  .optionsForm {
+    height: 16rem;
+  }
+}
+
+.optionsFormSection1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.optionsFormSection2 {
+  display: flex;
+  flex-direction: row;
+}
+
+.optionsFormLabel {
+  font-size: 1.2rem;
+}
+
+.optionsFormTextField {
+  box-sizing: border-box;
+  background-color: #dddddd;
+  border: 0.1rem solid #929292;
+  border-radius: 0.7rem;
+  font-size: 1.5rem;
+  height: 2.5rem;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  width: 100%;
+}
+
+.optionsFormCheckbox {
+  margin-right: 1rem;
+}
+
+.optionsFormSubmitButton {
+  background-color: black;
+  border: 0.1rem solid black;
+  border-radius: 0.7rem;
+  color: white;
+  font-size: 1.5rem;
+  height: 3rem;
+  margin-top: auto;
+  width: 100%;
+}
+
+.optionsError {
+  color: red;
 }
 
 body {
