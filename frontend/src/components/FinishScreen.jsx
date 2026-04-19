@@ -37,7 +37,7 @@ export default function FinishScreen({ guesses, gameWin, finishTime, scorePosted
               setUsername('');
             }}>
               <input className="finishScreenScoreInput" name="scoreInput" type="text" placeholder="John Doe" value={username} onChange={(event) => setUsername(event.target.value)} required />
-              <button className="finishScreenScoreButton" type="submit">Post Score</button>
+              <button className="finishScreenScoreButton" type="submit">Post</button>
             </form>
           )}
           </>

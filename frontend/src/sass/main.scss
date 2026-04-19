@@ -2,6 +2,7 @@
 @use 'sections/header.scss';
 @use 'sections/options.scss';
 @use 'sections/game.scss';
+@use 'sections/finishscreen.scss';
 
 body {
   background-color: #414141;
@@ -24,5 +25,6 @@ body {
 
   @include until-height(700px) {
     height: 100%;
+    margin-top: 2rem;
   }
 }
