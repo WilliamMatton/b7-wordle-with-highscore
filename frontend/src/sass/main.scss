@@ -1,6 +1,7 @@
 @use 'lib.scss' as *;
 @use 'sections/header.scss';
 @use 'sections/options.scss';
+@use 'sections/game.scss';
 
 body {
   background-color: #414141;
@@ -15,5 +16,13 @@ body {
   flex-direction: column;
   justify-content: center;
   height: 90vh;
-  margin: 0 10%;
+  margin: 0 5%;
+
+  @include from-width($screen_width_480) {
+    margin: 0 10%;
+  }
+
+  @include until-height(700px) {
+    height: 100%;
+  }
 }
