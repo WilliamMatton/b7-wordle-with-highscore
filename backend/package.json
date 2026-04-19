@@ -8,11 +8,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --no-source-map src/sass/main.scss static/output.css",
+    "watch-sass": "sass --watch --no-source-map src/sass/main.scss static/output.css"
   },
   "dependencies": {
     "express": "^5.2.1",
     "mongoose": "^9.4.1",
-    "pug": "^3.0.4"
+    "pug": "^3.0.4",
+    "sass": "^1.99.0"
   }
 }
