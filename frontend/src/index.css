@@ -13,7 +13,7 @@ body {
 .headerPageList {
   display: flex;
   flex-direction: row;
-  gap: 5rem;
+  gap: 10%;
   justify-content: center;
   list-style: none;
   margin: 0;
@@ -36,16 +36,20 @@ body {
   flex-direction: column;
   justify-content: center;
   height: 90vh;
+  margin: 0 10%;
 }
 
 .optionsForm {
   background-color: white;
   border: 0.1rem solid #4d4d4d;
   border-radius: 0.7rem;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   height: 16rem;
+  margin: 2rem 0;
+  max-width: 100%;
   padding: 1rem;
   width: 23rem;
 }

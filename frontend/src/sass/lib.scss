@@ -1,0 +1,7 @@
+$screen_width_480: 480px;
+
+@mixin from-width($min-width) {
+  @media screen and (min-width: $min-width) {
+    @content;
+  }
+}
