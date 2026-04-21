@@ -13,6 +13,7 @@ export default function initializeApp() {
   app.use(express.json());
 
   const GAME_SESSIONS = [];
+  const DB_URL = process.env.DB_URL;
 
   app.get('/', async(req, res) => {
     const html = await fs.readFile('../frontend/dist/index.html');
@@ -73,7 +74,7 @@ export default function initializeApp() {
   });
 
   app.get('/leaderboard', async(req, res) => {
-    await mongoose.connect('mongodb://localhost:27017/wordle');
+    await mongoose.connect(DB_URL);
     const scores = await Score.find();
 
     res.render(
@@ -86,14 +87,14 @@ export default function initializeApp() {
   });
 
   app.get('/api/scores', async(req, res) => {
-    await mongoose.connect('mongodb://localhost:27017/wordle');
+    await mongoose.connect(DB_URL);
     const scores = await Score.find();
     res.json(scores);
   });
 
   app.post('/api/scores', async(req, res) => {
     try {
-      await mongoose.connect('mongodb://localhost:27017/wordle');
+      await mongoose.connect(DB_URL);
       const score = new Score({
         username: req.body.username,
         time: req.body.time,
