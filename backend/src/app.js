@@ -75,13 +75,25 @@ export default function initializeApp() {
 
   app.get('/leaderboard', async(req, res) => {
     await mongoose.connect(DB_URL);
-    const scores = await Score.find();
 
-    res.render(
-      'leaderboard',
-      { 
+    const { length, repeating } = req.query;
+    const filterData = {
+      length: length ? parseInt(length) : null,
+      repeat: repeating ? repeating === "true" : null
+    };
+
+    const query = {};
+    if(filterData.length !== null) query['options.wordLength'] = filterData.length;
+    if(filterData.repeat !== null) query['options.repeatLetters'] = filterData.repeat;
+
+    const scores = await Score.find(query);
+    const wordLengths = await Score.distinct('options.wordLength');
+
+    res.render('leaderboard', { 
         title: 'Leaderboard',
-        scoreData: scores
+        scoreData: scores,
+        filterData: filterData,
+        lengths: wordLengths
       }
     );
   });

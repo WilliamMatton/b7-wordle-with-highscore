@@ -7,21 +7,26 @@ block pageStyle
   link(rel="stylesheet", type="text/css" href="/static/static.css")
 
 block content
+  - const filterLength = filterData.length != null
+  - const filterRepeat = filterData.repeat != null
   main
     div(class="leaderboard")
       h1(class="lbHeading") Leaderboard
+      div(class="lbFilterMenu")
+        h2(class="lbFilterHeading") Filters
+        form(class="lbFilterForm" method="GET")
+          div(class="lbFilterLHS")
+            label(class="lbSelectLabel" for="length") Word length
+            select(class="lbLengthSelect" name="length" onchange="this.form.submit()")
+              option(class="lengthOption" value="" selected=!filterLength) All
+              each num in lengths
+                option(class="lengthOption" value=num selected=filterLength && filterData.length == num)= num
+          div(class="lbFilterRHS")
+            label(class="lbSelectLabel" for="repeating") Repeat letters allowed
+            select(class="lbRepeatSelect" name="repeating" onchange="this.form.submit()")
+              option(class="repeatOption" value="" selected=!filterRepeat) All
+              option(class="repeatOption" value="true" selected=filterRepeat && filterData.repeat) True
+              option(class="repeatOption" value="false" selected=filterRepeat && !filterData.repeat) False
       ul(class="scoreList")
         each data in scoreData
-          li(class="scoreListItem")
-            div(class="scoreLHS")
-              p(class="scoreUsername")= data.username
-              div(class="scoreInfo")
-                small(class="scoreInfoTime")= 'Time: ' + data.time + ' seconds'
-                small(class="scoreInfoLength")= 'Word length: ' + data.options.wordLength
-                small(class="scoreInfoRepeat")= 'Repeat letters allowed: ' + data.options.repeatLetters
-            div(class="scoreRHS")
-              h1(class="guessesHeading") Guessed words
-              ul(class="guessList")
-                each guess in data.guesses
-                  li(class="guessListItem")
-                    small(class="scoreInfoGuess")= guess
+          include ./includes/scoreItem.pug

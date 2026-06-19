@@ -1,0 +1,7 @@
+export type gameSession = {
+    gameWord: string;
+    guesses: string[];
+    sessionID: string;
+    startTime: number;
+};
+//# sourceMappingURL=types.d.ts.map
